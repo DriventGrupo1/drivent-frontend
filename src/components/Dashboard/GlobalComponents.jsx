@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-export const PageTitle = styled.h1`
+export const PageTitle = styled.h2`
   font-family: 'Roboto', sans-serif;
   font-size: 34px;
   color: #000000;
   margin-bottom: 40px;
 `;
 
-export const SectionTitle = styled.h2`
+export const SectionTitle = styled.h3`
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
   color: #8e8e8e;
