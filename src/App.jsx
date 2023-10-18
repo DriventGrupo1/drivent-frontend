@@ -18,6 +18,7 @@ import Certificate from './pages/Dashboard/Certificate';
 
 import { EventInfoProvider } from './contexts/EventInfoContext';
 import { UserProvider } from './contexts/UserContext';
+import { UserTicketProvider } from './contexts/UserTicketContext';
 
 import useToken from './hooks/useToken';
 
@@ -27,6 +28,7 @@ export default function App() {
       <ToastContainer />
       <EventInfoProvider>
         <UserProvider>
+          <UserTicketProvider>
           <Router>
             <Routes>
               <Route path="/" element={<Countdown />} />
@@ -50,6 +52,7 @@ export default function App() {
               </Route>
             </Routes>
           </Router>
+          </UserTicketProvider>
         </UserProvider>
       </EventInfoProvider>
     </>
