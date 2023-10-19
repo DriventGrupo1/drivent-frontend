@@ -1,30 +1,35 @@
 import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { Typography } from '@mui/material';
 import HotelContainer from '../../../components/Hotel/HotelContainer';
-
+import UserTicketContext from '../../../contexts/UserTicketContext';
+import { PageTitle, SectionTitle } from "../../../components/Dashboard/GlobalComponents";
 
 export default function Hotel() {
+  const { userTicket,userTicketError} = useContext(UserTicketContext)
+
+  // mock para testar os casos possíveis
+  /* const userTicket = {
+    status: "PAID",
+    TicketType: {
+      includesHotel: true        
+    }
+  }
+  const userTicketError = null */
+  
   return (
     <>
-      <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      <Subtitulo>Primeiro, escolha seu hotel</Subtitulo>
-      <HotelContainer></HotelContainer>
+      <PageTitle>Escolha de hotel e quarto</PageTitle>
+      {(userTicketError)&& <SectionTitle center={"error"}>Could not connect to server. Please try again later</SectionTitle>}
+      {(!userTicket)? <SectionTitle center={"error"}>Hospedagem - Não disponível</SectionTitle> : 
+      (userTicket.status==="RESERVED") ? 
+      <SectionTitle center={"error"}>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</SectionTitle> 
+      : (userTicket.status==="PAID" && userTicket.TicketType.includesHotel===false) ? 
+      <SectionTitle center={"error"}>Sua modalidade de ingresso não inclui hospedagem<br/>Prossiga para a escolha de atividades</SectionTitle> :
+      (<>
+        <SectionTitle>Primeiro, escolha seu hotel</SectionTitle>
+        <HotelContainer/>
+      </>)} 
     </>
-  )
+  );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
-
-const Subtitulo = styled.div`
-  color: #8E8E8E;
-  font-size: 20px;
-  font-weight: 400;
-  font-family: Roboto;
-  margin-top: 36px;
-  margin-bottom: 18px;
-`
