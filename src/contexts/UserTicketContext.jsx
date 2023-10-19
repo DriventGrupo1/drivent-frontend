@@ -10,6 +10,7 @@ export default UserTicketContext;
 export function UserTicketProvider({ children }) {
   const {ticket,ticketLoading,ticketError } = useUserTicket();
     console.log(ticketLoading, ticketError, ticket);
+    
   if (ticketLoading) {
     return (
       <Splash loading />
