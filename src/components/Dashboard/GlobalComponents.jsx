@@ -38,3 +38,30 @@ export const PageButton = styled.button`
   padding: 10.5px 13px;
   cursor: pointer;
 `;
+
+export const TicketButton = styled.button`
+  font-family: 'Roboto', sans-serif;
+  width: 145px;
+  height: 145px;
+  margin-right: 25px;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #cecece;
+  cursor: pointer;
+
+  .ticketType {
+    font-size: 16px;
+    color: #454545;
+  }
+
+  .ticketPrice {
+    font-size: 14px;
+    color: #898989;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 14px;
+    width: 40%;
+    height: 15%;
+  }
+`;
