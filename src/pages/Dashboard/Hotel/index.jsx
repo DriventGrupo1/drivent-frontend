@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Typography } from '@mui/material';
-import HotelComponent from '../../../components/Hotel/HotelComponent';
+import HotelContainer from '../../../components/Hotel/HotelContainer';
 
 
 export default function Hotel() {
@@ -11,11 +11,7 @@ export default function Hotel() {
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       <Subtitulo>Primeiro, escolha seu hotel</Subtitulo>
-      <HotelContainer>
-        <HotelComponent></HotelComponent>
-        <HotelComponent></HotelComponent>
-        <HotelComponent></HotelComponent>
-      </HotelContainer>
+      <HotelContainer></HotelContainer>
     </>
   )
 }
@@ -31,10 +27,4 @@ const Subtitulo = styled.div`
   font-family: Roboto;
   margin-top: 36px;
   margin-bottom: 18px;
-`
-
-const HotelContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  overflow: scroll;
 `
