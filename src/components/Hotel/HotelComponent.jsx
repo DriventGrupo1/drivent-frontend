@@ -1,11 +1,14 @@
 import styled from "styled-components"
 
-export default function HotelComponent(){
+export default function HotelComponent(props){
+
+    const {hotelInfo} = props
+
     return(
         <HotelContainer>
-            <img src="https://media.istockphoto.com/id/104731717/photo/luxury-resort.jpg?s=612x612&w=0&k=20&c=cODMSPbYyrn1FHake1xYz9M8r15iOfGz9Aosy9Db7mI=" alt="" />
+            <img src={hotelInfo.image} alt="" />
             <HotelInfo>
-                <HotelName>Driven Resort</HotelName>
+                <HotelName>{hotelInfo.name}</HotelName>
                 <RoomTypes>Tipos de acomodação:</RoomTypes>
                 <Info>Single e Double</Info>
                 <VagasDisponiveis>Vagas disponíveis:</VagasDisponiveis>
