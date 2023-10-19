@@ -2,9 +2,7 @@ import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import UserTicketContext from '../../../contexts/UserTicketContext';
-import { PageTitle, SectionTitle, PageButton } from "../../../components/Dashboard/GlobalComponents";
-
-
+import { PageTitle, SectionTitle } from "../../../components/Dashboard/GlobalComponents";
 
 export default function Hotel() {
   const { userTicket,userTicketError} = useContext(UserTicketContext)
