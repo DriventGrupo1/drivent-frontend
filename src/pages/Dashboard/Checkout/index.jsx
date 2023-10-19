@@ -1,8 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import UserTicketContext from '../../../contexts/UserTicketContext';
 import { PageTitle, SectionTitle, PageButton } from '../../../components/Dashboard/GlobalComponents';
+import CardForm from '../../../components/Payment/CardForm';
 
 export default function Checkout() {
   const { userTicket } = useContext(UserTicketContext);
@@ -16,6 +17,23 @@ export default function Checkout() {
     return 'Presencial + Sem Hotel';
   }
 
+  const [cardInfo, setCardInfo] = useState({
+    number: '',
+    expiry: '',
+    cvc: '',
+    name: '',
+    focus: '',
+  });
+
+  const handleInputChange = (evt) => {
+    const { name, value } = evt.target;
+    setCardInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleInputFocus = (evt) => {
+    setCardInfo((prev) => ({ ...prev, focus: evt.target.name }));
+  };
+
   return (
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
@@ -25,6 +43,7 @@ export default function Checkout() {
         <span>R$ {userTicket?.TicketType.price}</span>
       </TicketInfo>
       <SectionTitle>Pagamento</SectionTitle>
+      <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus}/>
       <PageButton>FINALIZAR PAGAMENTO</PageButton>
     </>
   );
