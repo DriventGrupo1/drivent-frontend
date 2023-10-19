@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const PageTitle = styled.h2`
   font-family: 'Roboto', sans-serif;
@@ -13,6 +13,18 @@ export const SectionTitle = styled.h3`
   color: #8e8e8e;
   margin-bottom: 20px;
   margin-top: 30px;
+  ${({center})=>
+  center==="error" && css`
+  width: 45%;
+  margin:0;
+  position: fixed;
+  top:calc(50% - 10px);
+  right:20%;
+  @media (max-width: 600px) {
+    right:27%;
+  }
+  `
+  }
 `;
 
 export const PageButton = styled.button`

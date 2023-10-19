@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicketTypes from '../../hooks/api/useTicketTypes';
 import { PageTitle, SectionTitle, TicketButton } from '../Dashboard/GlobalComponents';
+import ErrorComponent from '../Dashboard/ErrorComponent';
 
 export default function PaymentContainer() {
   const { ticketTypes, ticketLoading, ticketError } = useTicketTypes();
@@ -30,13 +31,15 @@ export default function PaymentContainer() {
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
       {!enrollment ? (
-        <SectionTitle>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</SectionTitle>
+        <ErrorComponent
+          errorMessage={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'}
+        />
       ) : ticketLoading ? (
         'Carregando...'
       ) : ticketError ? (
-        <SectionTitle>Falha no servidor. Tente novamente mais tarde</SectionTitle>
+        <ErrorComponent errorMessage={'Falha no servidor. Tente novamente mais tarde'} />
       ) : !ticketTypes ? (
-        <SectionTitle>Sem tickets disponíveis. Tente novamente mais tarde</SectionTitle>
+        <ErrorComponentSem errorMessage={'Tickets disponíveis. Tente novamente mais tarde'} />
       ) : (
         <>
           <SectionTitle>Primeiro, escolha sua modalidade de ingresso</SectionTitle>
