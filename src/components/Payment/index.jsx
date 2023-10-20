@@ -7,24 +7,31 @@ import useSaveTicket from '../../hooks/api/useSaveTicket';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserTicket from '../../hooks/api/useUserTicket';
+import { ThreeDots } from 'react-loader-spinner';
 
 export default function PaymentContainer() {
   const { ticket, ticketLoading, ticketError } = useUserTicket();
   const { ticketTypes, ticketTypesLoading, ticketTypesError } = useTicketTypes();
   const { savedTicketLoading, savedTicketError, saveUserTicket } = useSaveTicket();
-  const { enrollment } = useEnrollment();
-  const [notRemoteOptionClicked, setNotRemoteOptionClicked] = useState(0);
-  const [remoteOptionClicked, setRemoteOptionClicked] = useState(0);
-  const [notRemoteWithoutHotelOptionClicked, setNotRemoteWithoutHotelOptionClicked] = useState(0);
-  const [notRemoteWithHotelOptionClicked, setNotRemoteWithHotelOptionClicked] = useState(0);
+  const { enrollment, enrollmentLoading } = useEnrollment();
+  const [notRemoteOptionClicked, setNotRemoteOptionClicked] = useState(false);
+  const [remoteOptionClicked, setRemoteOptionClicked] = useState(false);
+  const [notRemoteWithoutHotelOptionClicked, setNotRemoteWithoutHotelOptionClicked] = useState(false);
+  const [notRemoteWithHotelOptionClicked, setNotRemoteWithHotelOptionClicked] = useState(false);
   const [ticketTypeId, setTicketTypeId] = useState({});
   const [ticketPrice, setTicketPrice] = useState(0);
+  const [buttonState, setButtonState] = useState(false);
 
   const navigate = useNavigate();
 
-  ticket && navigate('/dashboard/payment/checkout');
+  useEffect(() => {
+    if (ticket) {
+      navigate('/dashboard/payment/checkout');
+    }
+  }, [ticket]);
 
   async function handleSubmit(body) {
+    setButtonState(true);
     try {
       await saveUserTicket(body);
       toast('Ticket reservado com sucesso!');
@@ -32,6 +39,7 @@ export default function PaymentContainer() {
     } catch (error) {
       console.log(error);
       toast('Erro ao reservar ticket!');
+      setButtonState(false);
     }
   }
 
@@ -54,14 +62,13 @@ export default function PaymentContainer() {
     };
   }
 
-  function markRemoteOrNotRemoteOption(e) {
-    //console.log(e.target);
-    if (e.target.firstChild.innerText === 'Presencial') {
-      setNotRemoteOptionClicked(1);
-      setRemoteOptionClicked(0);
-    } else if (e.target.firstChild.innerText === 'Online') {
-      setRemoteOptionClicked(1);
-      setNotRemoteOptionClicked(0);
+  function markRemoteOrNotRemoteOption(type) {
+    if (type === 'Presencial') {
+      setNotRemoteOptionClicked(true);
+      setRemoteOptionClicked(false);
+    } else if (type === 'Online') {
+      setRemoteOptionClicked(true);
+      setNotRemoteOptionClicked(false);
       setTicketTypeId({
         ticketTypeId: result.ticketRemote.id,
       });
@@ -69,18 +76,17 @@ export default function PaymentContainer() {
     }
   }
 
-  function markWithoutHotelOrWithHotelOption(e) {
-    //console.log(e.target);
-    if (e.target.firstChild.innerText === 'Sem Hotel') {
-      setNotRemoteWithoutHotelOptionClicked(1);
-      setNotRemoteWithHotelOptionClicked(0);
+  function markWithoutHotelOrWithHotelOption(type) {
+    if (type === 'Sem Hotel') {
+      setNotRemoteWithoutHotelOptionClicked(true);
+      setNotRemoteWithHotelOptionClicked(false);
       setTicketTypeId({
         ticketTypeId: result.ticketNotRemoteWithoutHotel.id,
       });
       setTicketPrice(result.ticketNotRemoteWithoutHotel.price);
-    } else if (e.target.firstChild.innerText === 'Com Hotel') {
-      setNotRemoteWithHotelOptionClicked(1);
-      setNotRemoteWithoutHotelOptionClicked(0);
+    } else if (type === 'Com Hotel') {
+      setNotRemoteWithHotelOptionClicked(true);
+      setNotRemoteWithoutHotelOptionClicked(false);
       setTicketTypeId({
         ticketTypeId: result.ticketNotRemoteWithHotel.id,
       });
@@ -91,7 +97,9 @@ export default function PaymentContainer() {
   return (
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
-      {!enrollment ? (
+      {enrollmentLoading ? (
+        'Carregando...'
+      ) : !enrollment ? (
         <ErrorComponent
           errorMessage={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'}
         />
@@ -104,22 +112,38 @@ export default function PaymentContainer() {
       ) : (
         <>
           <SectionTitle>Primeiro, escolha sua modalidade de ingresso</SectionTitle>
-          <TicketButton onClick={markRemoteOrNotRemoteOption} clicked={notRemoteOptionClicked}>
+          <TicketButton
+            onClick={() => markRemoteOrNotRemoteOption('Presencial')}
+            $clicked={notRemoteOptionClicked}
+            disabled={buttonState}
+          >
             <p className="ticketType">Presencial</p>
             <p className="ticketPrice">R$ {result.ticketNotRemoteWithoutHotel.price}</p>
           </TicketButton>
-          <TicketButton onClick={markRemoteOrNotRemoteOption} clicked={remoteOptionClicked}>
+          <TicketButton
+            onClick={() => markRemoteOrNotRemoteOption('Online')}
+            $clicked={remoteOptionClicked}
+            disabled={buttonState}
+          >
             <p className="ticketType">Online</p>
             <p className="ticketPrice">R$ {result.ticketRemote.price}</p>
           </TicketButton>
           {notRemoteOptionClicked ? (
             <>
               <SectionTitle>Ótimo! Agora escolha sua modalidade de hospedagem</SectionTitle>
-              <TicketButton onClick={markWithoutHotelOrWithHotelOption} clicked={notRemoteWithoutHotelOptionClicked}>
+              <TicketButton
+                onClick={() => markWithoutHotelOrWithHotelOption('Sem Hotel')}
+                $clicked={notRemoteWithoutHotelOptionClicked}
+                disabled={buttonState}
+              >
                 <p className="ticketType">Sem Hotel</p>
                 <p className="ticketPrice">+ R$ 0</p>
               </TicketButton>
-              <TicketButton onClick={markWithoutHotelOrWithHotelOption} clicked={notRemoteWithHotelOptionClicked}>
+              <TicketButton
+                onClick={() => markWithoutHotelOrWithHotelOption('Com Hotel')}
+                $clicked={notRemoteWithHotelOptionClicked}
+                disabled={buttonState}
+              >
                 <p className="ticketType">Com Hotel</p>
                 <p className="ticketPrice">
                   + R$ {result.ticketNotRemoteWithHotel.price - result.ticketNotRemoteWithoutHotel.price}
@@ -130,7 +154,9 @@ export default function PaymentContainer() {
                   <SectionTitle>
                     Fechado! O total ficou em <strong>R$ {ticketPrice}</strong> . Agora é só confirmar:
                   </SectionTitle>
-                  <PageButton onClick={handleSubmit}>RESERVAR INGRESSO</PageButton>
+                  <PageButton onClick={() => handleSubmit(ticketTypeId)} disabled={buttonState}>
+                    RESERVAR INGRESSO
+                  </PageButton>
                 </>
               ) : (
                 <></>
@@ -141,7 +167,9 @@ export default function PaymentContainer() {
               <SectionTitle>
                 Fechado! O total ficou em <strong>R$ {ticketPrice}</strong> . Agora é só confirmar:
               </SectionTitle>
-              <PageButton onClick={() => handleSubmit(ticketTypeId)}>RESERVAR INGRESSO</PageButton>
+              <PageButton onClick={() => handleSubmit(ticketTypeId)} disabled={buttonState}>
+                RESERVAR INGRESSO
+              </PageButton>
             </>
           ) : (
             <></>
