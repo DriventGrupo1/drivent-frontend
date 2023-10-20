@@ -17,6 +17,36 @@ export default function Checkout() {
     return 'Presencial + Sem Hotel';
   }
 
+  function validateCard() {
+    const { number, expiry, cvc, name } = cardInfo;
+    const nameHasNumber = /\d/.test(name);
+    const expiryPattern = /^(?:\d{4}|\d{2}\/\d{2})$/;
+    const validExpiry = expiryPattern.test(expiry);
+
+
+    if (!Number(number) || number.length < 13) {
+      alert('Número do cartão de crédito é inválido');
+      return;
+    }
+
+    if (nameHasNumber || name.length < 5) {
+      alert('Nome do cartão de crédito é inválido');
+      return;
+    }
+
+    if (!validExpiry) {
+      alert('Data de expiração do cartão de crédito é inválida');
+      return;
+    }
+
+    if (!Number(cvc) || cvc.length < 3) {
+      alert('Código de segurança do cartão de crédito é inválido');
+      return;
+    }
+
+    console.log("ok");
+  }
+
   const [cardInfo, setCardInfo] = useState({
     number: '',
     expiry: '',
@@ -43,8 +73,8 @@ export default function Checkout() {
         <span>R$ {userTicket?.TicketType.price}</span>
       </TicketInfo>
       <SectionTitle>Pagamento</SectionTitle>
-      <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus}/>
-      <PageButton>FINALIZAR PAGAMENTO</PageButton>
+      <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} />
+      <PageButton onClick={validateCard}>FINALIZAR PAGAMENTO</PageButton>
     </>
   );
 }

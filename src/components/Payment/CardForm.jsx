@@ -10,7 +10,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
         <input
           type="text"
           name="number"
-          maxlength="16"
+          maxLength="16"
           placeholder="Card Number"
           value={cardInfo.number}
           onChange={handleInputChange}
@@ -20,7 +20,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
         <input
           type="text"
           name="name"
-          maxlength="50"
+          maxLength="50"
           placeholder="Name"
           value={cardInfo.name}
           onChange={handleInputChange}
@@ -30,7 +30,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
           <input
             type="tel"
             name="expiry"
-            maxlength="5"
+            maxLength="5"
             placeholder="Valid Thru"
             value={cardInfo.expiry}
             onChange={handleInputChange}
@@ -40,7 +40,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
             type="text"
             name="cvc"
             placeholder="CVC"
-            maxlength="4"
+            maxLength="4"
             value={cardInfo.cvc}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
