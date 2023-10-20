@@ -4,21 +4,11 @@ import useHotels from "../../hooks/api/useHotels"
 
 export default function HotelContainer(){
 
-  const { hotels } = useHotels()
-
-  console.log(hotels)
-
-  if(!hotels){
-    return(
-      <Caixa>
-        Nenhum hotel Encontrado!
-      </Caixa>
-    )
-  }
+  const { hotels, hotelError, hotelLoading } = useHotels()
 
   return (
   <Caixa>
-    {hotels.map((hotel)=> <HotelComponent key={hotel.id} hotelInfo={hotel}/>)}
+    {(hotelLoading)? <>Carregando...</> : (hotelError) ?  <>Nenhum hotel encontrado!</> : hotels.map((hotel)=> <HotelComponent key={hotel.id} hotelInfo={hotel}/>)}
   </Caixa>
   )
 }
