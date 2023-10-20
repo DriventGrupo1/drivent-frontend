@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicketTypes from '../../hooks/api/useTicketTypes';
 import { PageButton, PageTitle, SectionTitle, TicketButton } from '../Dashboard/GlobalComponents';
 import ErrorComponent from '../Dashboard/ErrorComponent';
+import useSaveTicket from '../../hooks/api/useSaveTicket';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import useUserTicket from '../../hooks/api/useUserTicket';
 
 export default function PaymentContainer() {
-  const { ticketTypes, ticketLoading, ticketError } = useTicketTypes();
+  const { ticket, ticketLoading, ticketError } = useUserTicket();
+  const { ticketTypes, ticketTypesLoading, ticketTypesError } = useTicketTypes();
+  const { savedTicketLoading, savedTicketError, saveUserTicket } = useSaveTicket();
   const { enrollment } = useEnrollment();
   const [notRemoteOptionClicked, setNotRemoteOptionClicked] = useState(0);
   const [remoteOptionClicked, setRemoteOptionClicked] = useState(0);
@@ -13,6 +19,21 @@ export default function PaymentContainer() {
   const [notRemoteWithHotelOptionClicked, setNotRemoteWithHotelOptionClicked] = useState(0);
   const [ticketTypeId, setTicketTypeId] = useState({});
   const [ticketPrice, setTicketPrice] = useState(0);
+
+  const navigate = useNavigate();
+
+  ticket && navigate('/dashboard/payment/checkout');
+
+  async function handleSubmit(body) {
+    try {
+      await saveUserTicket(body);
+      toast('Ticket reservado com sucesso!');
+      navigate('/dashboard/payment/checkout');
+    } catch (error) {
+      console.log(error);
+      toast('Erro ao reservar ticket!');
+    }
+  }
 
   function getTicketValue(ticketTypes) {
     const ticketRemote = ticketTypes.find((ticketType) => ticketType.isRemote === true);
@@ -74,9 +95,9 @@ export default function PaymentContainer() {
         <ErrorComponent
           errorMessage={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'}
         />
-      ) : ticketLoading ? (
+      ) : ticketTypesLoading ? (
         'Carregando...'
-      ) : ticketError ? (
+      ) : ticketTypesError ? (
         <ErrorComponent errorMessage={'Falha no servidor. Tente novamente mais tarde'} />
       ) : !ticketTypes ? (
         <ErrorComponent errorMessage={'Tickets indisponíveis. Tente novamente mais tarde'} />
@@ -109,7 +130,7 @@ export default function PaymentContainer() {
                   <SectionTitle>
                     Fechado! O total ficou em <strong>R$ {ticketPrice}</strong> . Agora é só confirmar:
                   </SectionTitle>
-                  <PageButton>RESERVAR INGRESSO</PageButton>
+                  <PageButton onClick={handleSubmit}>RESERVAR INGRESSO</PageButton>
                 </>
               ) : (
                 <></>
@@ -120,7 +141,7 @@ export default function PaymentContainer() {
               <SectionTitle>
                 Fechado! O total ficou em <strong>R$ {ticketPrice}</strong> . Agora é só confirmar:
               </SectionTitle>
-              <PageButton>RESERVAR INGRESSO</PageButton>
+              <PageButton onClick={() => handleSubmit(ticketTypeId)}>RESERVAR INGRESSO</PageButton>
             </>
           ) : (
             <></>
