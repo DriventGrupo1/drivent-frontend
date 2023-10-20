@@ -7,7 +7,6 @@ import useSaveTicket from '../../hooks/api/useSaveTicket';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserTicket from '../../hooks/api/useUserTicket';
-import { ThreeDots } from 'react-loader-spinner';
 
 export default function PaymentContainer() {
   const { ticket, ticketLoading, ticketError } = useUserTicket();
