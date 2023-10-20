@@ -56,7 +56,7 @@ const Container = styled.div`
   max-width: 700px;
   justify-content: start;
   gap: 30px;
-  margin-bottom: 60px;
+  margin-bottom: 55px;
 
   div:first-child {
     margin: 0;
