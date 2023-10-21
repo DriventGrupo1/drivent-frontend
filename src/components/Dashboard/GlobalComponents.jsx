@@ -13,9 +13,10 @@ export const SectionTitle = styled.h3`
   color: #8e8e8e;
   margin-bottom: 20px;
   margin-top: 30px;
-  ${({ center }) =>
-    center === 'error' &&
+  ${({ $center }) =>
+    $center === 'error' &&
     css`
+    text-align: center;
       width: 45%;
       margin: 0;
       position: fixed;
