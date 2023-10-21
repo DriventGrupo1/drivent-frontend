@@ -6,16 +6,16 @@ import UserTicketContext from '../../../contexts/UserTicketContext';
 import { PageTitle, SectionTitle } from "../../../components/Dashboard/GlobalComponents";
 
 export default function Hotel() {
-  /* const { userTicket,userTicketError} = useContext(UserTicketContext) */
+  const { userTicket,userTicketError} = useContext(UserTicketContext)
 
   // mock para testar os casos possíveis
-  const userTicket = {
+/*   const userTicket = {
     status: "PAID",
     TicketType: {
       includesHotel: true        
     }
   }
-  const userTicketError = null
+  const userTicketError = null */
   
   return (
     <>
