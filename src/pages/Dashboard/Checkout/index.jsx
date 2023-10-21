@@ -10,7 +10,8 @@ import CardForm from '../../../components/Payment/CardForm';
 import paymentConfirmedImage from '../../../assets/images/paymentconfirmed.png';
 
 export default function Checkout() {
-  const { userTicket } = useContext(UserTicketContext);
+  const { userTicket, userTicketLoading } = useContext(UserTicketContext);
+  console.log(userTicket);
   const { paymentProcessLoading, paymentProcessError, paymentProcess } = usePaymentProcess();
 
   const [cardInfo, setCardInfo] = useState({
@@ -90,6 +91,7 @@ export default function Checkout() {
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
       <SectionTitle>Ingresso escolhido</SectionTitle>
+      {userTicketLoading ? "loading" :<>
       <TicketInfo>
         <p>{generateTicketText()}</p>
         <span>R$ {userTicket.TicketType.price}</span>
@@ -115,6 +117,7 @@ export default function Checkout() {
           </div>
         </Confirmed>
       )}
+      </>}
     </>
   );
 }
