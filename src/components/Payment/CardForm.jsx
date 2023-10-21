@@ -2,7 +2,7 @@ import Cards from 'react-credit-cards-2';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import styled from 'styled-components';
 
-export default function CardForm({ cardInfo, handleInputChange, handleInputFocus }) {
+export default function CardForm({ cardInfo, handleInputChange, handleInputFocus, isDisabled }) {
   return (
     <Container>
       <Cards number={cardInfo.number} expiry={cardInfo.expiry} cvc={cardInfo.cvc} name={cardInfo.name} focused={cardInfo.focus} />
@@ -15,6 +15,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
           value={cardInfo.number}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          disabled={isDisabled}
         />
         <span>E.g.: 49..., 51..., 36..., 37... </span>
         <input
@@ -25,6 +26,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
           value={cardInfo.name}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          disabled={isDisabled}
         />
         <div>
           <input
@@ -35,6 +37,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
             value={cardInfo.expiry}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
+            disabled={isDisabled}
           />
           <input
             type="text"
@@ -44,6 +47,7 @@ export default function CardForm({ cardInfo, handleInputChange, handleInputFocus
             value={cardInfo.cvc}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
+            disabled={isDisabled}
           />
         </div>
       </Form>
@@ -75,6 +79,11 @@ const Form = styled.form`
     border: 1px solid #c9c9c9;
     font-size: 20px;
     padding: 0 10px;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 
   input::placeholder {

@@ -102,7 +102,7 @@ export default function Checkout() {
           <SectionTitle>Pagamento</SectionTitle>
           {userTicket.status !== 'PAID' && (
             <>
-              <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} />
+              <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} disabled={paymentProcessLoading}/>
               <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
                 FINALIZAR PAGAMENTO
               </PageButton>
