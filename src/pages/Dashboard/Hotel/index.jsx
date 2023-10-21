@@ -20,12 +20,12 @@ export default function Hotel() {
   return (
     <>
       <PageTitle>Escolha de hotel e quarto</PageTitle>
-      {(userTicketError)&& <SectionTitle center={"error"}>Could not connect to server. Please try again later</SectionTitle>}
-      {(!userTicket)? <SectionTitle center={"error"}>Hospedagem - Não disponível</SectionTitle> : 
+      {(userTicketError)&& <SectionTitle $center={"error"}>Não foi possível se conectar ao servidor. Por favor tente novamente mais tarde</SectionTitle>}
+      {(!userTicket)? <SectionTitle $center={"error"}>Hospedagem - Não disponível</SectionTitle> : 
       (userTicket.status==="RESERVED") ? 
-      <SectionTitle center={"error"}>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</SectionTitle> 
+      <SectionTitle $center={"error"}>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</SectionTitle> 
       : (userTicket.status==="PAID" && userTicket.TicketType.includesHotel===false) ? 
-      <SectionTitle center={"error"}>Sua modalidade de ingresso não inclui hospedagem<br/>Prossiga para a escolha de atividades</SectionTitle> :
+      <SectionTitle $center={"error"}>Sua modalidade de ingresso não inclui hospedagem<br/>Prossiga para a escolha de atividades</SectionTitle> :
       (<>
         <SectionTitle>Primeiro, escolha seu hotel</SectionTitle>
         <HotelContainer/>
