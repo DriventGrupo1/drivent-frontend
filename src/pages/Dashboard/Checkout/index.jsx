@@ -11,7 +11,6 @@ import paymentConfirmedImage from '../../../assets/images/paymentconfirmed.png';
 
 export default function Checkout() {
   const { userTicket, userTicketLoading } = useContext(UserTicketContext);
-  console.log(userTicket);
   const { paymentProcessLoading, paymentProcessError, paymentProcess } = usePaymentProcess();
 
   const [cardInfo, setCardInfo] = useState({
@@ -91,33 +90,38 @@ export default function Checkout() {
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
       <SectionTitle>Ingresso escolhido</SectionTitle>
-      {userTicketLoading ? "loading" :<>
-      <TicketInfo>
-        <p>{generateTicketText()}</p>
-        <span>R$ {userTicket.TicketType.price}</span>
-      </TicketInfo>
-      <SectionTitle>Pagamento</SectionTitle>
-      {userTicket.status !== 'PAID' && (
+
+      {!userTicket || userTicketLoading ? (
+        'loading'
+      ) : (
         <>
-          <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} />
-          <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
-            FINALIZAR PAGAMENTO
-          </PageButton>
+          <TicketInfo>
+            <p>{generateTicketText()}</p>
+            <span>R$ {userTicket.TicketType.price}</span>
+          </TicketInfo>
+          <SectionTitle>Pagamento</SectionTitle>
+          {userTicket.status !== 'PAID' && (
+            <>
+              <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} />
+              <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
+                FINALIZAR PAGAMENTO
+              </PageButton>
+            </>
+          )}
+          {userTicket.status === 'PAID' && (
+            <Confirmed>
+              <img src={paymentConfirmedImage} />
+              <div>
+                <h4>Pagamento confirmado!</h4>
+                <p>
+                  Prossiga para escolha de
+                  {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
+                </p>
+              </div>
+            </Confirmed>
+          )}
         </>
       )}
-      {userTicket.status === 'PAID' && (
-        <Confirmed>
-          <img src={paymentConfirmedImage} />
-          <div>
-            <h4>Pagamento confirmado!</h4>
-            <p>
-              Prossiga para escolha de
-              {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
-            </p>
-          </div>
-        </Confirmed>
-      )}
-      </>}
     </>
   );
 }
