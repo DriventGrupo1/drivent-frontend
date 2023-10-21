@@ -9,7 +9,7 @@ export default function HotelContainer(){
 
   return (
   <Caixa>
-    {(hotelLoading)? <>Carregando...</> : (!hotelError) ?  <SectionTitle $center={"error"}>Nenhum hotel encontrado!</SectionTitle> : hotels.map((hotel)=> <HotelComponent key={hotel.id} hotelInfo={hotel}/>)}
+    {(hotelLoading)? <>Carregando...</> : (hotelError) ?  <SectionTitle $center={"error"}>Nenhum hotel encontrado!</SectionTitle> : hotels.map((hotel)=> <HotelComponent key={hotel.id} hotelInfo={hotel}/>)}
   </Caixa>
   )
 }
