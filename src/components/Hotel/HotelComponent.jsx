@@ -1,8 +1,47 @@
 import styled from "styled-components"
+import useHotelById from "../../hooks/api/useHotelById"
+import { useEffect, useState } from "react"
 
 export default function HotelComponent(props){
 
     const {hotelInfo} = props
+    const { getHotelById, hotelById} = useHotelById()
+    const [roomTypes, setRoomTypes] = useState("")
+    const [availableRooms, setAvailableRooms] = useState(0)
+
+    useEffect(()=>{
+
+
+
+        async function getHotels (){
+            try {
+                const response = await getHotelById(hotelInfo.id)
+                return response
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        async function getRooms (){
+            const retorno = await getHotels()
+            const newRooms = retorno.Rooms
+            if(newRooms.length === 0){
+                setRoomTypes("-")
+                setAvailableRooms(0)
+            }else{
+                const types = []
+        
+                setAvailableRooms(retorno.available)
+                if(newRooms.find((element)=> element.capacity === 1)) types.push("Single")
+                if(newRooms.find((element)=> element.capacity === 2)) types.push("Double")
+                if(newRooms.find((element)=> element.capacity === 3)) types.push("Triple")
+        
+                setRoomTypes(types.join(', '))
+            }
+        }
+
+        getRooms()
+    }, [])
 
     return(
         <HotelContainer>
@@ -10,9 +49,9 @@ export default function HotelComponent(props){
             <HotelInfo>
                 <HotelName>{hotelInfo.name}</HotelName>
                 <RoomTypes>Tipos de acomodação:</RoomTypes>
-                <Info>Single e Double</Info>
+                <Info>{roomTypes}</Info>
                 <VagasDisponiveis>Vagas disponíveis:</VagasDisponiveis>
-                <Info>103</Info>
+                <Info>{availableRooms}</Info>
             </HotelInfo>
         </HotelContainer>
     )

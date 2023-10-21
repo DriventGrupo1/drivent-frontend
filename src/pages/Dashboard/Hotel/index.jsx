@@ -9,7 +9,7 @@ export default function Hotel() {
   const { userTicket,userTicketError} = useContext(UserTicketContext)
 
   // mock para testar os casos possíveis
-  /* const userTicket = {
+/*   const userTicket = {
     status: "PAID",
     TicketType: {
       includesHotel: true        
