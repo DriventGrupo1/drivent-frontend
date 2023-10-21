@@ -13,9 +13,10 @@ export const SectionTitle = styled.h3`
   color: #8e8e8e;
   margin-bottom: 20px;
   margin-top: 30px;
-  ${({ center }) =>
-    center === 'error' &&
+  ${({ $center }) =>
+    $center === 'error' &&
     css`
+    text-align: center;
       width: 45%;
       margin: 0;
       position: fixed;
@@ -37,6 +38,11 @@ export const PageButton = styled.button`
   border: none;
   padding: 10.5px 13px;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 `;
 
 export const TicketButton = styled.button`
@@ -44,10 +50,15 @@ export const TicketButton = styled.button`
   width: 145px;
   height: 145px;
   margin-right: 25px;
-  background-color: ${(props) => (props.clicked === 1 ? '#FFEED2' : 'white')};
+  background-color: ${(props) => (props.$clicked === true ? '#FFEED2' : 'white')};
   border-radius: 20px;
   border: 1px solid #cecece;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 
   .ticketType {
     font-size: 16px;
