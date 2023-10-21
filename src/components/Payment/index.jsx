@@ -25,7 +25,6 @@ export default function PaymentContainer() {
 
   useEffect(() => {
     if (ticket) {
-      console.log(ticket);
       navigate('/dashboard/payment/checkout');
     }
   }, [ticket]);
@@ -108,7 +107,7 @@ export default function PaymentContainer() {
         'Carregando...'
       ) : ticketTypesError ? (
         <ErrorComponent errorMessage={'Falha no servidor. Tente novamente mais tarde'} />
-      ) : !ticketTypes ? (
+      ) : (!ticketTypes && ticketTypes?.length <= 2) ? (
         <ErrorComponent errorMessage={'Tickets indisponíveis. Tente novamente mais tarde'} />
       ) : (
         <>
