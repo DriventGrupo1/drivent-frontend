@@ -25,7 +25,6 @@ export default function PaymentContainer() {
 
   useEffect(() => {
     if (ticket) {
-      console.log(ticket);
       navigate('/dashboard/payment/checkout');
     }
   }, [ticket]);
