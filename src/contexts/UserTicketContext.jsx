@@ -9,7 +9,7 @@ export function UserTicketProvider({ children }) {
   const {ticket,ticketLoading,ticketError } = useUserTicket();
 
   return (
-    <UserTicketContext.Provider value={{ userTicket: ticket, userTicketError: ticketError }}>
+    <UserTicketContext.Provider value={{ userTicket: ticket, userTicketLoading:ticketLoading,userTicketError: ticketError }}>
       { children }
     </UserTicketContext.Provider>
   );
