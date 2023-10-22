@@ -7,9 +7,8 @@ export default function HotelComponent(props) {
   const { hotelById, hotelByIdLoading, hotelByIdError } = useHotelById(hotelInfo.id);
   const [roomTypes, setRoomTypes] = useState('');
   const [availableRooms, setAvailableRooms] = useState(0);
-
   useEffect(() => {
-    async function getRooms() {
+    function getRooms() {
       const newRooms = hotelById.Rooms;
       if (newRooms.length === 0) {
         setRoomTypes('-');
@@ -17,7 +16,7 @@ export default function HotelComponent(props) {
       } else {
         const types = [];
 
-        setAvailableRooms(retorno.available);
+        setAvailableRooms(hotelById.available);
         if (newRooms.find((element) => element.capacity === 1)) types.push('Single');
         if (newRooms.find((element) => element.capacity === 2)) types.push('Double');
         if (newRooms.find((element) => element.capacity === 3)) types.push('Triple');
@@ -28,7 +27,7 @@ export default function HotelComponent(props) {
     if (!hotelByIdLoading) {
       getRooms();
     }
-  }, []);
+  }, [hotelByIdLoading]);
 
   return (
     <>
