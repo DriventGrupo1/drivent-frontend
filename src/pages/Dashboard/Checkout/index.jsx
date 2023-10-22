@@ -1,17 +1,18 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import creditCardType from 'credit-card-type';
 import { toast } from 'react-toastify';
 
-import UserTicketContext from '../../../contexts/UserTicketContext';
 import usePaymentProcess from '../../../hooks/api/usePaymentProcess';
 import { PageTitle, SectionTitle, PageButton } from '../../../components/Dashboard/GlobalComponents';
 import CardForm from '../../../components/Payment/CardForm';
 import paymentConfirmedImage from '../../../assets/images/paymentconfirmed.png';
 
 export default function Checkout() {
-  const { userTicket, userTicketLoading } = useContext(UserTicketContext);
   const { paymentProcessLoading, paymentProcessError, paymentProcess } = usePaymentProcess();
+  const location = useLocation();
+  const { userTicket } = location.state;
 
   const [cardInfo, setCardInfo] = useState({
     number: '',
@@ -90,37 +91,35 @@ export default function Checkout() {
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
       <SectionTitle>Ingresso escolhido</SectionTitle>
-
-      {!userTicket || userTicketLoading ? (
-        'loading'
-      ) : (
+      <TicketInfo>
+        <p>{generateTicketText()}</p>
+        <span>R$ {userTicket.TicketType.price}</span>
+      </TicketInfo>
+      <SectionTitle>Pagamento</SectionTitle>
+      {userTicket.status !== 'PAID' && (
         <>
-          <TicketInfo>
-            <p>{generateTicketText()}</p>
-            <span>R$ {userTicket.TicketType.price}</span>
-          </TicketInfo>
-          <SectionTitle>Pagamento</SectionTitle>
-          {userTicket.status !== 'PAID' && (
-            <>
-              <CardForm cardInfo={cardInfo} handleInputChange={handleInputChange} handleInputFocus={handleInputFocus} disabled={paymentProcessLoading}/>
-              <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
-                FINALIZAR PAGAMENTO
-              </PageButton>
-            </>
-          )}
-          {userTicket.status === 'PAID' && (
-            <Confirmed>
-              <img src={paymentConfirmedImage} />
-              <div>
-                <h4>Pagamento confirmado!</h4>
-                <p>
-                  Prossiga para escolha de
-                  {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
-                </p>
-              </div>
-            </Confirmed>
-          )}
+          <CardForm
+            cardInfo={cardInfo}
+            handleInputChange={handleInputChange}
+            handleInputFocus={handleInputFocus}
+            disabled={paymentProcessLoading}
+          />
+          <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
+            FINALIZAR PAGAMENTO
+          </PageButton>
         </>
+      )}
+      {userTicket.status === 'PAID' && (
+        <Confirmed>
+          <img src={paymentConfirmedImage} />
+          <div>
+            <h4>Pagamento confirmado!</h4>
+            <p>
+              Prossiga para escolha de
+              {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
+            </p>
+          </div>
+        </Confirmed>
       )}
     </>
   );

@@ -25,7 +25,7 @@ export default function PaymentContainer() {
 
   useEffect(() => {
     if (ticket) {
-      navigate('/dashboard/payment/checkout');
+      navigate('/dashboard/payment/checkout', { state: {userTicket: ticket} });
     }
   }, [ticket]);
 
@@ -33,9 +33,9 @@ export default function PaymentContainer() {
   async function handleSubmit(body) {
     setButtonState(true);
     try {
-      await saveUserTicket(body);
+      const newTicket = await saveUserTicket(body);
       toast('Ticket reservado com sucesso!');
-      navigate('/dashboard/payment/checkout');
+      navigate('/dashboard/payment/checkout', {state: {userTicket: newTicket}});
     } catch (error) {
       console.log(error);
       toast('Erro ao reservar ticket!');
