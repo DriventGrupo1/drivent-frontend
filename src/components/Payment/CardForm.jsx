@@ -5,7 +5,13 @@ import styled from 'styled-components';
 export default function CardForm({ cardInfo, handleInputChange, handleInputFocus, isDisabled }) {
   return (
     <Container>
-      <Cards number={cardInfo.number} expiry={cardInfo.expiry} cvc={cardInfo.cvc} name={cardInfo.name} focused={cardInfo.focus} />
+      <Cards
+        number={cardInfo.number}
+        expiry={cardInfo.expiry}
+        cvc={cardInfo.cvc}
+        name={cardInfo.name}
+        focused={cardInfo.focus}
+      />
       <Form>
         <input
           type="text"

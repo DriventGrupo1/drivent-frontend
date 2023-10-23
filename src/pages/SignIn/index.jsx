@@ -11,6 +11,7 @@ import { Row, Title, Label } from '../../components/Auth';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
+import UserTicketContext from '../../contexts/UserTicketContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
 
@@ -23,6 +24,7 @@ export default function SignIn() {
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
+  const { setNewLogin } = useContext(UserTicketContext);
 
   const navigate = useNavigate();
 
@@ -33,11 +35,13 @@ export default function SignIn() {
     try {
       const userData = await signIn(email, password);
       setUserData(userData);
+      setNewLogin(true);
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (err) {
+      console.log(err);
       toast('Não foi possível fazer o login!');
-    setButtonState(false);
+      setButtonState(false);
     }
   }
 
