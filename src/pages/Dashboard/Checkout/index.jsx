@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import creditCardType from 'credit-card-type';
@@ -8,6 +8,7 @@ import usePaymentProcess from '../../../hooks/api/usePaymentProcess';
 import { PageTitle, SectionTitle, PageButton } from '../../../components/Dashboard/GlobalComponents';
 import CardForm from '../../../components/Payment/CardForm';
 import paymentConfirmedImage from '../../../assets/images/paymentconfirmed.png';
+import UserTicketContext from '../../../contexts/UserTicketContext';
 
 export default function Checkout() {
   const { userTicket, setUserTicket, userTicketLoading } = useContext(UserTicketContext);
