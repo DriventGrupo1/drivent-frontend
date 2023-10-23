@@ -1,9 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import creditCardType from 'credit-card-type';
 import { toast } from 'react-toastify';
 
-import UserTicketContext from '../../../contexts/UserTicketContext';
 import usePaymentProcess from '../../../hooks/api/usePaymentProcess';
 import { PageTitle, SectionTitle, PageButton } from '../../../components/Dashboard/GlobalComponents';
 import CardForm from '../../../components/Payment/CardForm';
