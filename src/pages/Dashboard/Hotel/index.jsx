@@ -11,15 +11,15 @@ export default function Hotel() {
       <PageTitle>Escolha de hotel e quarto</PageTitle>
       {!userTicket ? (
         <SectionTitle $center={'error'}>Hospedagem - Não disponível</SectionTitle>
-      ) : userTicket.status === 'RESERVED' ? (
-        <SectionTitle $center={'error'}>
-          Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem
-        </SectionTitle>
-      ) : userTicket.status === 'PAID' && userTicket.TicketType.includesHotel === false ? (
+      ) : userTicket.TicketType.includesHotel === false ? (
         <SectionTitle $center={'error'}>
           Sua modalidade de ingresso não inclui hospedagem
           <br />
           Prossiga para a escolha de atividades
+        </SectionTitle>
+      ) : userTicket.status === 'RESERVED' ? (
+        <SectionTitle $center={'error'}>
+          Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem
         </SectionTitle>
       ) : (
         <>
