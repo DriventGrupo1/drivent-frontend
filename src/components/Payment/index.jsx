@@ -37,7 +37,7 @@ export default function PaymentContainer() {
       const newUserTicket = await saveUserTicket(body);
       setUserTicket(newUserTicket);
       toast('Ticket reservado com sucesso!');
-      navigate('/dashboard/payment/checkout', { state: { userTicket: newTicket } });
+      navigate('/dashboard/payment/checkout', { state: { userTicket: newUserTicket } });
     } catch (error) {
       console.log(error);
       toast('Erro ao reservar ticket!');
