@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import ReactDOM from 'react-dom';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -12,14 +11,7 @@ const FormControlWrapper = styled.section`
   flex-direction: column;
 `;
 
-export default function MultiSelect({
-  label,
-  name,
-  id,
-  value,
-  onChange,
-  children,
-}) {
+export default function MultiSelect({ label, name, id, value, onChange, children }) {
   const inputLabelRef = useRef(null);
 
   return (
@@ -28,16 +20,7 @@ export default function MultiSelect({
         <InputLabel ref={inputLabelRef} htmlFor={id}>
           {label}
         </InputLabel>
-        <Select
-          value={value}
-          onChange={onChange}
-          input={
-            <OutlinedInput
-              name={name}
-              id={id}
-            />
-          }
-        >
+        <Select value={value} onChange={onChange} input={<OutlinedInput name={name} id={id} />}>
           {children}
         </Select>
       </FormControl>

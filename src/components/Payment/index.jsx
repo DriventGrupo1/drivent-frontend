@@ -9,10 +9,10 @@ import ErrorComponent from '../Dashboard/ErrorComponent';
 import useSaveTicket from '../../hooks/api/useSaveTicket';
 
 export default function PaymentContainer() {
-  const { userTicket, setUserTicket, userTicketLoading } = useContext(UserTicketContext);
+  const { userTicket, setUserTicket } = useContext(UserTicketContext);
 
   const { ticketTypes, ticketTypesLoading, ticketTypesError } = useTicketTypes();
-  const { savedTicketLoading, savedTicketError, saveUserTicket } = useSaveTicket();
+  const { saveUserTicket } = useSaveTicket();
 
   const { enrollment, enrollmentLoading } = useEnrollment();
   const [notRemoteOptionClicked, setNotRemoteOptionClicked] = useState(false);
@@ -37,7 +37,7 @@ export default function PaymentContainer() {
       const newUserTicket = await saveUserTicket(body);
       setUserTicket(newUserTicket);
       toast('Ticket reservado com sucesso!');
-      navigate('/dashboard/payment/checkout', { state: { userTicket: newUserTicket } });
+      navigate('/dashboard/payment/checkout');
     } catch (error) {
       console.log(error);
       toast('Erro ao reservar ticket!');
