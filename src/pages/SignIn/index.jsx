@@ -17,6 +17,7 @@ import useSignIn from '../../hooks/api/useSignIn';
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [buttonState, setButtonState] = useState(false);
 
   const { loadingSignIn, signIn } = useSignIn();
 
@@ -24,10 +25,11 @@ export default function SignIn() {
   const { setUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
-  
+
   async function submit(event) {
     event.preventDefault();
 
+    setButtonState(true);
     try {
       const userData = await signIn(email, password);
       setUserData(userData);
@@ -35,8 +37,9 @@ export default function SignIn() {
       navigate('/dashboard');
     } catch (err) {
       toast('Não foi possível fazer o login!');
+    setButtonState(false);
     }
-  } 
+  }
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -47,9 +50,25 @@ export default function SignIn() {
       <Row>
         <Label>Entrar</Label>
         <form onSubmit={submit}>
-          <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-          <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-          <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
+          <Input
+            label="E-mail"
+            type="text"
+            fullWidth
+            value={email}
+            disabled={buttonState}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            label="Senha"
+            type="password"
+            fullWidth
+            value={password}
+            disabled={buttonState}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" color="primary" fullWidth disabled={buttonState}>
+            Entrar
+          </Button>
         </form>
       </Row>
       <Row>
