@@ -10,9 +10,8 @@ import CardForm from '../../../components/Payment/CardForm';
 import paymentConfirmedImage from '../../../assets/images/paymentconfirmed.png';
 
 export default function Checkout() {
+  const { userTicket, setUserTicket, userTicketLoading } = useContext(UserTicketContext);
   const { paymentProcessLoading, paymentProcessError, paymentProcess } = usePaymentProcess();
-  const location = useLocation();
-  const { userTicket } = location.state;
 
   const [cardInfo, setCardInfo] = useState({
     number: '',
@@ -43,7 +42,7 @@ export default function Checkout() {
   async function payTicket(data) {
     try {
       await paymentProcess(data);
-      userTicket.status = 'PAID';
+      setUserTicket((prevState) => ({ ...prevState, status: 'PAID' }));
       toast('Ticket pago com sucesso!');
     } catch (error) {
       console.log(error);
@@ -91,35 +90,42 @@ export default function Checkout() {
     <>
       <PageTitle>Ingresso e pagamento</PageTitle>
       <SectionTitle>Ingresso escolhido</SectionTitle>
-      <TicketInfo>
-        <p>{generateTicketText()}</p>
-        <span>R$ {userTicket.TicketType.price}</span>
-      </TicketInfo>
-      <SectionTitle>Pagamento</SectionTitle>
-      {userTicket.status !== 'PAID' && (
+
+      {!userTicket || userTicketLoading ? (
+        'loading'
+      ) : (
         <>
-          <CardForm
-            cardInfo={cardInfo}
-            handleInputChange={handleInputChange}
-            handleInputFocus={handleInputFocus}
-            disabled={paymentProcessLoading}
-          />
-          <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
-            FINALIZAR PAGAMENTO
-          </PageButton>
+          <TicketInfo>
+            <p>{generateTicketText()}</p>
+            <span>R$ {userTicket.TicketType.price}</span>
+          </TicketInfo>
+          <SectionTitle>Pagamento</SectionTitle>
+          {userTicket.status !== 'PAID' && (
+            <>
+              <CardForm
+                cardInfo={cardInfo}
+                handleInputChange={handleInputChange}
+                handleInputFocus={handleInputFocus}
+                disabled={paymentProcessLoading}
+              />
+              <PageButton onClick={validateCard} disabled={paymentProcessLoading}>
+                FINALIZAR PAGAMENTO
+              </PageButton>
+            </>
+          )}
+          {userTicket.status === 'PAID' && (
+            <Confirmed>
+              <img src={paymentConfirmedImage} />
+              <div>
+                <h4>Pagamento confirmado!</h4>
+                <p>
+                  Prossiga para escolha de
+                  {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
+                </p>
+              </div>
+            </Confirmed>
+          )}
         </>
-      )}
-      {userTicket.status === 'PAID' && (
-        <Confirmed>
-          <img src={paymentConfirmedImage} />
-          <div>
-            <h4>Pagamento confirmado!</h4>
-            <p>
-              Prossiga para escolha de
-              {userTicket.TicketType.includesHotel ? ' hospedagem e atividades' : ' atividades'}
-            </p>
-          </div>
-        </Confirmed>
       )}
     </>
   );

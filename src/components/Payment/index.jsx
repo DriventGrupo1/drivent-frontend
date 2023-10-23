@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicketTypes from '../../hooks/api/useTicketTypes';
+import UserTicketContext from '../../contexts/UserTicketContext';
 import { PageButton, PageTitle, SectionTitle, TicketButton } from '../Dashboard/GlobalComponents';
 import ErrorComponent from '../Dashboard/ErrorComponent';
 import useSaveTicket from '../../hooks/api/useSaveTicket';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import useUserTicket from '../../hooks/api/useUserTicket';
 
 export default function PaymentContainer() {
-  const { ticket, ticketLoading, ticketError } = useUserTicket();
+  const { userTicket, setUserTicket, userTicketLoading } = useContext(UserTicketContext);
+
   const { ticketTypes, ticketTypesLoading, ticketTypesError } = useTicketTypes();
   const { savedTicketLoading, savedTicketError, saveUserTicket } = useSaveTicket();
+
   const { enrollment, enrollmentLoading } = useEnrollment();
   const [notRemoteOptionClicked, setNotRemoteOptionClicked] = useState(false);
   const [remoteOptionClicked, setRemoteOptionClicked] = useState(false);
@@ -24,18 +26,18 @@ export default function PaymentContainer() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (ticket) {
-      navigate('/dashboard/payment/checkout', { state: {userTicket: ticket} });
+    if (userTicket) {
+      navigate('/dashboard/payment/checkout');
     }
-  }, [ticket]);
-
+  }, [userTicket]);
 
   async function handleSubmit(body) {
     setButtonState(true);
     try {
-      const newTicket = await saveUserTicket(body);
+      const newUserTicket = await saveUserTicket(body);
+      setUserTicket(newUserTicket);
       toast('Ticket reservado com sucesso!');
-      navigate('/dashboard/payment/checkout', {state: {userTicket: newTicket}});
+      navigate('/dashboard/payment/checkout', { state: { userTicket: newTicket } });
     } catch (error) {
       console.log(error);
       toast('Erro ao reservar ticket!');
@@ -107,7 +109,7 @@ export default function PaymentContainer() {
         'Carregando...'
       ) : ticketTypesError ? (
         <ErrorComponent errorMessage={'Falha no servidor. Tente novamente mais tarde'} />
-      ) : (!ticketTypes && ticketTypes?.length <= 2) ? (
+      ) : !ticketTypes && ticketTypes?.length <= 2 ? (
         <ErrorComponent errorMessage={'Tickets indisponíveis. Tente novamente mais tarde'} />
       ) : (
         <>
