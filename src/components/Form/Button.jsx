@@ -1,7 +1,7 @@
 import MuiButton from '@mui/material/Button';
 import styled from 'styled-components';
 
-export default function Button({ variant='contained', children, ...props }) {
+export default function Button({ variant = 'contained', children, ...props }) {
   return (
     <StyledMuiButton variant={variant} {...props}>
       {children}
@@ -11,4 +11,9 @@ export default function Button({ variant='contained', children, ...props }) {
 
 const StyledMuiButton = styled(MuiButton)`
   margin-top: 8px !important;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 `;
