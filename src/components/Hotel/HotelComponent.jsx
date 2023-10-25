@@ -1,15 +1,24 @@
 import styled from 'styled-components';
 import useHotelById from '../../hooks/api/useHotelById';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HotelComponent(props) {
-  const { hotelInfo } = props;
+  const { hotelInfo, enableSelectRoom, selectedHotel, setSelectedHotel } = props;
   const { hotelById, hotelByIdLoading, hotelByIdError } = useHotelById(hotelInfo.id);
   const [roomTypes, setRoomTypes] = useState('');
   const [availableRooms, setAvailableRooms] = useState(0);
+  const [rooms, setRooms] = useState([]);
+
+  function selectHotel() {
+    enableSelectRoom(rooms);
+    setSelectedHotel(hotelInfo.id);
+  }
+
   useEffect(() => {
     function getRooms() {
       const newRooms = hotelById.Rooms;
+      setRooms(newRooms);
       if (newRooms.length === 0) {
         setRoomTypes('-');
         setAvailableRooms(0);
@@ -34,7 +43,7 @@ export default function HotelComponent(props) {
       {hotelByIdError ? (
         'erro'
       ) : (
-        <HotelContainer>
+        <HotelContainer onClick={selectHotel} $selected={selectedHotel === hotelInfo.id}>
           <img src={hotelInfo.image} alt="" />
           <HotelInfo>
             <HotelName>{hotelInfo.name}</HotelName>
@@ -52,18 +61,20 @@ export default function HotelComponent(props) {
 const HotelContainer = styled.div`
   height: 264px;
   width: 196px;
-  background-color: #ebebeb;
   border-radius: 10px;
   padding-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  background-color: ${(props) => (props.$selected ? '#FFEED2' : '#ebebeb')};
+
   img {
     width: 168px;
     height: 109px;
     border-radius: 5px;
   }
-  flex-shrink: 0;
 `;
 
 const HotelInfo = styled.div`
