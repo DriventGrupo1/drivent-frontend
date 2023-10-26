@@ -11,21 +11,19 @@ export function EventInfoProvider({ children }) {
   const { event, eventLoading, eventError } = useEvent();
 
   if (eventLoading) {
-    return (
-      <Splash loading />
-    );
+    return <Splash loading />;
   }
 
   if (eventError) {
-    let message = eventError.response ? eventError.response.data.message : 'Could not connect to server. Please try again later.';
-    return (
-      <Splash message={message} />
-    );
+    let message = eventError.response
+      ? eventError.response.data.message
+      : 'Could not connect to server. Please try again later.';
+    return <Splash message={message} />;
   }
-
+  console.log(event);
   return (
     <EventInfoContext.Provider value={{ eventInfo: event, eventInfoError: eventError }}>
-      { children }
+      {children}
     </EventInfoContext.Provider>
   );
 }

@@ -8,12 +8,16 @@ import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
 import Link from '../../components/Link';
 import { Row, Title, Label } from '../../components/Auth';
+import OutsideLogin from '../../components/Auth/OutsideLoginButton';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 import UserTicketContext from '../../contexts/UserTicketContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
+
+import gitLogo from '../../assets/images/icons/github-logo.png';
+import googleLogo from '../../assets/images/icons/google.1024x1024.png';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -44,6 +48,17 @@ export default function SignIn() {
       setButtonState(false);
     }
   }
+
+  const GIT_URL = 'https://github.com/login/oauth/authorize';
+  const GIT_CLIENT_ID = '2b488ba0f3a97b382052';
+  const params = new URLSearchParams({
+    responseType: 'code',
+    scope: 'user',
+    client_id: GIT_CLIENT_ID,
+    redirect_uri: 'http://localhost:5173/',
+  });
+
+  const authGithubURL = `${GIT_URL}?${params.toString()}`;
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -78,6 +93,14 @@ export default function SignIn() {
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
       </Row>
+      <OutsideLogin type="button" outsideUrl={authGithubURL}>
+        <img src={gitLogo} alt="gitLogo" />
+        Continuar com o Github
+      </OutsideLogin>
+      <OutsideLogin type="button" outsideUrl={'teste'}>
+        <img src={googleLogo} alt="googleLogo" />
+        Continuar com o Google
+      </OutsideLogin>
     </AuthLayout>
   );
 }
