@@ -94,7 +94,7 @@ const HotelName = styled.p`
 `;
 
 const RoomTypes = styled.p`
-  margin-top: 10px;
+  margin-top: 13px;
   font-weight: 700;
 `;
 
@@ -104,6 +104,6 @@ const Info = styled.p`
 `;
 
 const VagasDisponiveis = styled.p`
-  margin-top: 14px;
+  margin-top: 16px;
   font-weight: 700;
 `;
