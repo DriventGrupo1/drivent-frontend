@@ -7,6 +7,10 @@ import Day from "../../../components/Activity/Day";
 import EventInfoContext from "../../../contexts/EventInfoContext";
 import useActivtiesByEventId from "../../../hooks/api/useActivitiesByEventId";
 import dayjs from "dayjs";
+import utc from "dayjs-plugin-utc"
+
+dayjs.extend(utc);
+
 
 export default function Activities() {
   const { userTicket, userTicketError } = useContext(UserTicketContext)
@@ -22,8 +26,6 @@ export default function Activities() {
       }
     });
   }
-
-  console.log(datas)
 
   return (
     <>
