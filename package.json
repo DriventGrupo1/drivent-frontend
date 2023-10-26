@@ -21,6 +21,7 @@
     "credit-card-type": "^9.1.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
+    "dayjs-plugin-utc": "^0.1.2",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "qs": "^6.10.1",

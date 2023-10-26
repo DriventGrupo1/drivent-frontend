@@ -15,4 +15,5 @@ export async function subscribeToActivity(body, token){
       Authorization: `Bearer ${token}`,
     }
   })
+  return response.data
 }
