@@ -2,9 +2,14 @@ import styled from "styled-components"
 import {IoEnterOutline} from "react-icons/io5"
 import {AiOutlineCloseCircle} from "react-icons/ai"
 import { toast } from "react-toastify"
+import useSaveSubscriptionToActivity from "../../hooks/api/useSaveSubscriptionToActivity"
+import { useState } from "react"
 
 
 export default function Activity({activityInfo}){
+
+    const [buttonState, setButtonState] = useState(false)
+    const { saveSubscriptionToActivity } = useSaveSubscriptionToActivity()
 
     function formatTime(time){
         const hours = Math.floor(time/100)
@@ -16,9 +21,18 @@ export default function Activity({activityInfo}){
         return `${hours}:${minutes}`
     }
 
-    function clickHandler(){
+    async function clickHandler(){
         if(vagas === 0) return toast("As vagas dessa atividade já forma preenchidas!")
-        
+        setButtonState(true);
+        try {
+            await saveSubscriptionToActivity({activityId: activityInfo.id});
+            setButtonState(false);
+            toast('Incrição realizada!');
+        } catch (error) {
+            console.log(error);
+            toast('Erro ao se inscrever na atividade!');
+            setButtonState(false);
+        }
     }
 
     const vagas = activityInfo.capacity - activityInfo._count.ActivityEnrollment
@@ -31,7 +45,7 @@ export default function Activity({activityInfo}){
                 <Titulo>{activityInfo.name}</Titulo>
                 <Horario>{formatedStartTime} - {formatedEndTime}</Horario>
             </Info>
-            <Vagas onClick={clickHandler} vagas={vagas}>
+            <Vagas onClick={clickHandler} vagas={vagas} disabled={buttonState}>
                 {vagas === 0 ? (
                     <>
                         <AiOutlineCloseCircle size="25px" color="#CC6666"/>
@@ -81,18 +95,25 @@ const Horario = styled.p`
     font-weight: 400;
 `
 
-const Vagas = styled.div`
+const Vagas = styled.button`
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 25%;
     height: 75%;
+    border: none;
+    background-color: transparent;
     border-left: 1px solid #d7d7d7;
     p{
         color: ${(props)=> props.vagas === 0 ? "#CC6666" :"#078632"};
         font-family: 'Roboto', sans-serif;
         font-size: 9px;
         font-weight: 400;
+    }
+    &:disabled{
+        cursor: not-allowed;
+        opacity: 0.4;
     }
 `
