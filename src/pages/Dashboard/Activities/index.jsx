@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import UserTicketContext from '../../../contexts/UserTicketContext';
 import { PageTitle, SectionTitle } from '../../../components/Dashboard/GlobalComponents';
 import ErrorComponent from '../../../components/Dashboard/ErrorComponent';
@@ -31,6 +31,14 @@ export default function Activities() {
     });
   }
 
+  useEffect(()=>{
+    if(selected !== undefined){
+      setFilteredActivities(activitiesByEventId.filter((element)=>{
+        return dayjs(element.date).format('YYYY-MM-DD') === selected
+      }))
+    }
+  }, [selected])
+
   return (
     <>
       <PageTitle>Escolha de atividades</PageTitle>
@@ -54,9 +62,21 @@ export default function Activities() {
           </DaysContainer>
           {selected !== undefined && (
             <ActivitiesContainer>
-              <ActivitiesColumn title={'Auditório Principal'}></ActivitiesColumn>
-              <ActivitiesColumn title={'Auditório Lateral'}></ActivitiesColumn>
-              <ActivitiesColumn title={'Sala de Workshop'}></ActivitiesColumn>
+              <ActivitiesColumn title={'Auditório Principal'} activities={
+                filteredActivities.filter((element)=>{
+                return element.auditorium === "PRINCIPAL"
+                })
+              }></ActivitiesColumn>
+              <ActivitiesColumn title={'Auditório Lateral'} activities={
+                filteredActivities.filter((element)=>{
+                return element.auditorium === "LATERAL"
+                })
+              }></ActivitiesColumn>
+              <ActivitiesColumn title={'Sala de Workshop'} activities={
+                filteredActivities.filter((element)=>{
+                return element.auditorium === "WORKSHOP"
+                })
+              }></ActivitiesColumn>
             </ActivitiesContainer>
           )}
         </>
