@@ -20,7 +20,6 @@ export function EventInfoProvider({ children }) {
       : 'Could not connect to server. Please try again later.';
     return <Splash message={message} />;
   }
-  console.log(event);
   return (
     <EventInfoContext.Provider value={{ eventInfo: event, eventInfoError: eventError }}>
       {children}

@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 export default function OutsideLogin({ children, ...props }) {
-  const { type, outsideUrl } = props;
+  const { type, outsideLoginFunction, disabledStatus } = props;
 
-  console.log(outsideUrl);
   return (
     <Button
       type={type}
+      disabled={disabledStatus}
       onClick={() => {
-        window.location.replace(`${outsideUrl}`);
+        outsideLoginFunction();
       }}
     >
       {children}
