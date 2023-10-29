@@ -8,6 +8,10 @@ export const StyledContainer = styled(Container)`
   align-items: center;
   justify-content: space-between;
   padding: 30px;
+  @media (max-width: 600px) {
+    justify-content: center;
+    gap: 20px;
+  }
 `;
 
 export const Title = styled.h1`
