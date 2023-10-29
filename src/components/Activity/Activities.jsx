@@ -1,13 +1,20 @@
 import styled from 'styled-components';
 import Activity from './Activity';
 
-export default function ActivitiesColumn({ title, activities }) {
-
+export default function ActivitiesColumn({ title, activities, filteredActivities, setFilteredActivities }) {
   return (
     <ActivitiesContainer>
       <AduditoriumTitle>{title}</AduditoriumTitle>
       <AduditoriumContainer>
-        {activities.map((element)=><Activity key={element} activityInfo={element}></Activity>)}
+        {activities.map((element, index) => (
+          <Activity
+            key={index}
+            activityInfo={element}
+            subscribed={element.subscribed}
+            filteredActivities={filteredActivities}
+            setFilteredActivities={setFilteredActivities}
+          ></Activity>
+        ))}
       </AduditoriumContainer>
     </ActivitiesContainer>
   );
@@ -18,8 +25,6 @@ const ActivitiesContainer = styled.div`
   width: 100%;
 
   text-align: center;
-
-  //background-color: red;
 `;
 
 const AduditoriumTitle = styled.p`
@@ -39,4 +44,11 @@ const AduditoriumContainer = styled.div`
   align-items: center;
   padding-top: 10px;
   gap: 10px 0;
+  overflow-y: scroll;
+
+  padding-bottom: 15px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

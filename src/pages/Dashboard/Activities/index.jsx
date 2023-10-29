@@ -31,13 +31,15 @@ export default function Activities() {
     });
   }
 
-  useEffect(()=>{
-    if(selected !== undefined){
-      setFilteredActivities(activitiesByEventId.filter((element)=>{
-        return dayjs(element.date).format('YYYY-MM-DD') === selected
-      }))
+  useEffect(() => {
+    if (selected !== undefined) {
+      setFilteredActivities(
+        activitiesByEventId.filter((element) => {
+          return dayjs(element.date).format('YYYY-MM-DD') === selected;
+        })
+      );
     }
-  }, [selected])
+  }, [selected]);
 
   return (
     <>
@@ -62,21 +64,30 @@ export default function Activities() {
           </DaysContainer>
           {selected !== undefined && (
             <ActivitiesContainer>
-              <ActivitiesColumn title={'Auditório Principal'} activities={
-                filteredActivities.filter((element)=>{
-                return element.auditorium === "PRINCIPAL"
-                })
-              }></ActivitiesColumn>
-              <ActivitiesColumn title={'Auditório Lateral'} activities={
-                filteredActivities.filter((element)=>{
-                return element.auditorium === "LATERAL"
-                })
-              }></ActivitiesColumn>
-              <ActivitiesColumn title={'Sala de Workshop'} activities={
-                filteredActivities.filter((element)=>{
-                return element.auditorium === "WORKSHOP"
-                })
-              }></ActivitiesColumn>
+              <ActivitiesColumn
+                title={'Auditório Principal'}
+                activities={filteredActivities.filter((element) => {
+                  return element.auditorium === 'PRINCIPAL';
+                })}
+                filteredActivities={filteredActivities}
+                setFilteredActivities={setFilteredActivities}
+              />
+              <ActivitiesColumn
+                title={'Auditório Lateral'}
+                activities={filteredActivities.filter((element) => {
+                  return element.auditorium === 'LATERAL';
+                })}
+                filteredActivities={filteredActivities}
+                setFilteredActivities={setFilteredActivities}
+              />
+              <ActivitiesColumn
+                title={'Sala de Workshop'}
+                activities={filteredActivities.filter((element) => {
+                  return element.auditorium === 'WORKSHOP';
+                })}
+                filteredActivities={filteredActivities}
+                setFilteredActivities={setFilteredActivities}
+              />
             </ActivitiesContainer>
           )}
         </>
