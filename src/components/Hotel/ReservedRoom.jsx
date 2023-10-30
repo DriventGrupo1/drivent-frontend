@@ -1,17 +1,26 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useHotelById from '../../hooks/api/useHotelById';
 
 export default function ReservedRoom(props) {
-  const { bookingInfo } = props;
+  const { bookingInfo, setRooms } = props;
   const hotelInfo = bookingInfo.Room.Hotel;
+  const { hotelById, hotelByIdLoading, hotelByIdError } = useHotelById(hotelInfo.id);
 
   let roomType = '';
   if (bookingInfo.Room.capacity === 1) {
     roomType = 'Single';
-  } else if (bookingInfo.Room.capacity === 2) { 
-    roomType = 'Double' 
+  } else if (bookingInfo.Room.capacity === 2) {
+    roomType = 'Double';
   } else {
     roomType = 'Triple';
   }
+
+  useEffect(() => {
+    if (hotelById?.Rooms) {
+      setRooms(hotelById.Rooms);
+    }
+  }, [hotelByIdLoading]);
 
   return (
     <HotelContainer>
@@ -19,9 +28,11 @@ export default function ReservedRoom(props) {
       <HotelInfo>
         <HotelName>{hotelInfo.name}</HotelName>
         <Room>Quarto reservado</Room>
-        <Info>{bookingInfo.Room.name} ({roomType})</Info>
+        <Info>
+          {bookingInfo.Room.name} ({roomType})
+        </Info>
         <People>Pessoas no seu quarto</People>
-        <Info>Você{bookingInfo.bookings === 1? '' : ` e mais ${bookingInfo.bookings-1}`}</Info>
+        <Info>Você{bookingInfo.bookings === 1 ? '' : ` e mais ${bookingInfo.bookings - 1}`}</Info>
       </HotelInfo>
     </HotelContainer>
   );
@@ -36,7 +47,7 @@ const HotelContainer = styled.div`
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  background-color: #FFEED2;
+  background-color: #ffeed2;
   margin-bottom: 35px;
 
   img {

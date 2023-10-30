@@ -30,6 +30,7 @@ export default function Enroll() {
 
     setButtonState(true);
     if (password !== confirmPassword) {
+      setButtonState(false);
       toast('As senhas devem ser iguais!');
     } else {
       try {
