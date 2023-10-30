@@ -23,7 +23,7 @@ export default function Activities() {
 
   const datas = [];
 
-  if (!activitiesByEventIdLoading) {
+  if (!activitiesByEventIdLoading && !activitiesByEventIdError) {
     activitiesByEventId.forEach((element) => {
       if (!datas.includes(dayjs(element.date).format('YYYY-MM-DD'))) {
         datas.push(dayjs(element.date).format('YYYY-MM-DD'));
