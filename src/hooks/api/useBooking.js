@@ -11,6 +11,7 @@ export default function useBooking() {
     error: bookingError,
     act: booking,
   } = useAsync((type, data, roomId) => {
+    console.log(type);
     switch (type) {
       case 'get':
         return bookingApi.getUserBooking(token);
